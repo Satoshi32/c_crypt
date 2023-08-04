@@ -14,13 +14,9 @@ return 1;
 
 void crypt_all(int numthreads,char *key)
 {
-
 if(should_crypt)
 {
 
 
 }
-
-
-
 }
