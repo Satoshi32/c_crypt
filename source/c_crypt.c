@@ -11,18 +11,9 @@ return
 }
 int ncrypt(char *file)
 {
-
-if(filesize >= SHOULD_OMIT)
-{
-
-
-}
-else
-{
-
-
-}
-
+malloc()
+fread()
+for(i 
 
 }
 int should_crypt(char *file)
