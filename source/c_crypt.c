@@ -28,8 +28,9 @@ return 0;
 return 1;
 }
 
-void crypt_all(int numthreads,char *key)
+void crypt_all(char *key)
 {
+  completion_port = CreateIoCompletionPort((handle
 if(should_crypt)
 {
 
