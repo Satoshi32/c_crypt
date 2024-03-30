@@ -30,10 +30,18 @@ return 1;
 
 void crypt_all(char *key)
 {
-  completion_port = CreateIoCompletionPort((handle
-if(should_crypt)
-{
+DWORD threads;
+Handle thread;
+  completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
+    if(completion_port)
+  {
+do
+  {
+thread = CreateThread(0,0,crypt,key,0,0)
 
+threads--
+  }
+while(threads)
+  }
 
-}
 }
