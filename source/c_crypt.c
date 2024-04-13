@@ -36,8 +36,16 @@ while(1)
   {
 result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&OverLapped,INFINITE);
 if(CompletionKey==1)
+{
 
-else()
+}
+else
+{
+fwrite
+
+
+
+}
 
 
 
