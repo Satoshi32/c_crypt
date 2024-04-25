@@ -46,7 +46,22 @@
 
 #define CONFIG_SIGNATURE	0xAAEECCD0
 
-
+typedef struct _over_struct {
+	OVERLAPPED overlapped;
+	HANDLE hFile;
+	DWORD operation;
+	std::wstring wFullFilePath;
+	// uint8_t lastBlock[DEFAULT_BLOCK_SIZE];
+	uint8_t tempbuff[DEFAULT_BLOCK_SIZE]; // must be aligned to AES_KEY_SIZE_BYTES (1mb)
+	uint8_t outputbuff[DEFAULT_BLOCK_SIZE];
+	// DWORD lastBytesReceivedSize;
+	ULONGLONG currentBlock;
+	ULONGLONG fileSize;
+	enc_header encHeader;
+	DWORD StepRandSeedRuntime;
+	// AES_ctx aes;
+	void* aes_ctx;
+} over_struct;
 
 #pragma pack(push, 1)
 typedef struct _config_params {
