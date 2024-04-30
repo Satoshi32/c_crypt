@@ -1,4 +1,4 @@
-typedef struct _overlapped_
+typedef struct 
 {
 OVERLAPPED overlapped;
 HANDLE file;
