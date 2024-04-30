@@ -30,28 +30,43 @@ return 0;
 }
 return 1;
 }
+bool block_write(overlapped_enc *ovl,LONGLONG offset)
+{
+LARGE_INTEGER li;
+li.QuadPart = offset;
+ovl->overlapped.Offset = li.LowPart;
+ovl->overlapped.OffsetHigh = li.HighPart;
+
+
+
+
+
+}
 void crypt(char *key)
 {
 BOOL result;
-LPOVERLAPPED OverLapped;
+DWORD CompletionKey;
+overlapped_enc *OverLapped;
 while(1)
   {
 result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&OverLapped,INFINITE);
-if(CompletionKey==1)
-{
-
-}
-else
-{
-fwrite
+switch(OverLapped->operation)
+  {
+    case WRITE:
 
 
+    break;
 
-}
+    case READ:
+
+
+    break;
+
+    
 
 
 
-
+  }
   }
 }
 
