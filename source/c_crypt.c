@@ -62,6 +62,12 @@ switch(OverLapped->operation)
 
     break;
 
+    case HANDLE_EOF:
+
+
+
+    break;
+
     case CLOSE_HANDLE:
 
 
