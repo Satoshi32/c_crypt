@@ -22,17 +22,24 @@ return 0;
 }
 return 1;
 }
-bool block_write(overlapped_enc *ovl,LONGLONG offset)
+bool close_io
+bool block_read(overlapped_enc *ovl)
 {
-BOOL res;
 LARGE_INTEGER li;
-li.QuadPart = offset;
+li.QuadPart = (ovl->current_block * BLOCK_SIZE);
 ovl->overlapped.Offset = li.LowPart;
 ovl->overlapped.OffsetHigh = li.HighPart;
-memcpy(ovl->inpbuff,ovl->outbuff,BUFFER_SIZE);
-res =WriteFile(ovl->file,outbuff,BUFFER_SIZE,null,(LPOVERLAPPED)ovl);
+      BOOL res = ReadFile(ovl->file,inpbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+ovl->operation = WRITE;
+      PostQueuedCompletionStatus(CompletionPort,0,0, (LPOVERLAPPED)ovl);
+      return 0;
+}
+bool block_write(overlapped_enc *ovl)
+{     
+    memcpy(ovl->inpbuff,ovl->outbuff,BLOCK_SIZE);
+    BOOL res = WriteFile(ovl->file,outbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->current_block +=1;
-ULONGLONG next_offset = (ovl->current_block * BUFFER_SIZE) + BUFFER_SIZE ;
+    ULONGLONG next_offset = (ovl->current_block * BLOCK_SIZE) + BLOCK_SIZE ;
       
 if(next_offset >= ovl->file_size)
 {
@@ -43,38 +50,32 @@ else
 ovl->operation = READ;
 }
   
-  PostQueuedCompletionStatus(h_Port, 0, 0, (LPOVERLAPPED)ovl);
+  PostQueuedCompletionStatus(CompletionPort, 0, 0, (LPOVERLAPPED)ovl);
  return 0;
 
 
 
 }
-bool block_read()
+bool handle_eof(overlapped_end *ovl)
 {
-
-
-
-
-}
-
-bool handle_eof()
-{
-
-
-
+      memset(ovl->tempbuff,0,sizeof(ovl->tempbuff));
+BOOL res = ReadFile(ovl-> file,tempguff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+ovl->operation = CLOSE_IO;
+  PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED)ovl);
 }
 void crypt(char *key)
 {
 BOOL result;
 DWORD CompletionKey;
 overlapped_enc *OverLapped;
+LONGLONG offset;
 while(1)
   {
 result = GetQueuedCompletionStatus(CompletionPort,&NumberOfBytes,CompletionKey,&OverLapped,INFINITE);
 switch(OverLapped->operation)
   {
     case WRITE:
-  
+ 
       
     break;
 
@@ -89,14 +90,10 @@ switch(OverLapped->operation)
 
     break;
 
-    case CLOSE_HANDLE:
+    case CLOSE_IO:
 
 
     break;
-    
-
-
-
   }
   }
 }
