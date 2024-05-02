@@ -32,7 +32,7 @@ HANDLE thread;
               {
                 // found a subdirectory; recurse into it
                 PathCombine(fullpath, lpFolder, data.cFileName);
-                FindFilesRecursively(szFullPattern, lpFilePattern);
+               thread =  CreateThread(0,0,recurse,fullpath,0,0);
               }
               else
              {
