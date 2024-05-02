@@ -2,6 +2,9 @@
 #DEFINE _C_CRYPT_H_
 #include <aes.h>
 #include <minwinbase.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 typedef struct 
 {
 OVERLAPPED overlapped;
