@@ -1,5 +1,5 @@
 # c_crypt
-simple AES file encryption via IOCP ports
+simple AES file encryption via IOCP 
  
  
  
