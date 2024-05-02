@@ -32,12 +32,15 @@ new_ovl->operation = HANDLE_EOF;
       {
 new_ovl->operation = READ;
       }
-      CreateIoCompletionPort(CompletionPort,file,0,0);
-if(! PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED *)new_ovl))
-{
-  return 1;    
-}
-  return 0;;
+      if( CreateIoCompletionPort(CompletionPort,file,0,0) == NULL)
+      {
+return 1;
+      }
+      if(!PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED *)new_ovl))
+      {
+return 1;    
+      }
+return 0;;
 
 
 }
