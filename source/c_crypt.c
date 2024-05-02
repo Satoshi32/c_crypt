@@ -134,6 +134,8 @@ void close_io(overlapped_enc *ovl)
 {
 CancelIo(ovl->file);
 CloseFile(ovl->file);
+
+      //* TODO change file name
       free(ovl);
       return;
 
