@@ -1,5 +1,4 @@
-#define OMIT_LENGHT 512
-#define SHOULD_OMIT 2048
+
 #include <IoAPI.h>
 #include <fileapi.h>
 #include <string.h>
