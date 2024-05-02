@@ -1,5 +1,5 @@
-#ifndef _TINY_AES_H_
-#define _TINY_AES_H_
+#ifndef _TINYAES_H_
+#define _TINYAES_H_
 
 #include <stdint.h>
 #include <stddef.h>
