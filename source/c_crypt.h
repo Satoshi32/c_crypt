@@ -1,3 +1,5 @@
+#ifndef _C_CRYPT_H_
+#DEFINE _C_CRYPT_H_
 #include <aes.h>
 typedef struct 
 {
