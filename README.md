@@ -1,5 +1,9 @@
 # c_crypt
 simple AES file encryption via IOCP ports
-#todo
+ 
+ 
+ 
+ 
+ #todo
 change the name of encrypted files
 test the code
