@@ -85,7 +85,7 @@ LARGE_INTEGER li;
 li.QuadPart = (ovl->current_block * BLOCK_SIZE);
 ovl->overlapped.Offset = li.LowPart;
 ovl->overlapped.OffsetHigh = li.HighPart;
-      BOOL res = ReadFile(ovl->file,inpbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+      BOOL res = ReadFile(ovl->file,ovl->inpbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = WRITE;
       PostQueuedCompletionStatus(CompletionPort,0,0, (LPOVERLAPPED)ovl);
       return ;
@@ -93,7 +93,7 @@ ovl->operation = WRITE;
 void block_write(overlapped_enc *ovl)
 {     
     memcpy(ovl->inpbuff,ovl->outbuff,BLOCK_SIZE);
-    BOOL res = WriteFile(ovl->file,outbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+    BOOL res = WriteFile(ovl->file,ovl->outbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->current_block +=1;
     ULONGLONG next_offset = (ovl->current_block * BLOCK_SIZE) + BLOCK_SIZE ;
       
@@ -114,10 +114,10 @@ ovl->operation = READ;
 }
 void handle_eof(overlapped_enc *ovl)
 {
-      memset(ovl->tempbuff,0,BLOCK_SIZE);
-BOOL res = ReadFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
-
-BOOL res = WriteFile(ovl->file,tempbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+memset(ovl->impbuff,0,BLOCK_SIZE);
+BOOL res = ReadFile(ovl->file,ovl->impbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
+AES_CBC_encrypt_buffer(ctx,ovl->impbuff,BLOCK_SIZE);
+BOOL res = WriteFile(ovl->file,ovl->impbuff,BLOCK_SIZE,NULL,(LPOVERLAPPED)ovl);
 ovl->operation = CLOSE_IO;
   PostQueuedCompletionStatus(CompletionPort,0,0,(LPOVERLAPPED)ovl);
       return;
