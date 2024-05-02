@@ -17,7 +17,12 @@ return 1;
 }
 void recurse()
 {
-
+char fullpath[256];
+      memset(fullpath,0,sizeof(fullpath));
+WIN32_FIND_DATA;
+HANDLE findfile;
+HANDLE thread;
+      
 
 
 }
