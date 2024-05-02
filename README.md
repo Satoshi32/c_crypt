@@ -1,2 +1,5 @@
 # c_crypt
-a simple file encryptor written in c
+simple AES file encryption via IOCP ports
+#todo
+change the name of encrypted files
+test the code
