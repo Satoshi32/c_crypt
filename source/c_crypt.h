@@ -1,5 +1,9 @@
 #ifndef _C_CRYPT_H_
 #DEFINE _C_CRYPT_H_
+#DEFINE WRITE 1
+#DEFINE READ 2
+#DEFINE HANDLE_EOF 3
+#DEFINE CLOSE_IO 4
 #DEFINE _BLOCK_SIZE_ (16384 * 5)
 #include <aes.h>
 #include <minwinbase.h>
