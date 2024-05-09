@@ -172,9 +172,12 @@ close_io(OverLapped);
 
 void crypt_all(char *key)
 {
+SYSTEM_INFO sys_info;
+GetSystemInfo(&sysinfo);
 struct AES_ctx ctx;
 AES_init_ctx(ctx,key);
 DWORD threads;
+threads = 2* sys_info.dwNumberOfProcessors  ;
 HANDLE thread;
   CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
     if(CompletionPort)
