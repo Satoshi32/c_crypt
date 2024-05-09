@@ -173,7 +173,7 @@ close_io(OverLapped);
 void crypt_all(char *key)
 {
 SYSTEM_INFO sys_info;
-GetSystemInfo(&sysinfo);
+GetSystemInfo(&sys_info);
 struct AES_ctx ctx;
 AES_init_ctx(ctx,key);
 DWORD threads;
