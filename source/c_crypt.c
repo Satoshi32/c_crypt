@@ -36,7 +36,7 @@ HANDLE thread;
         do{
              if(data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
               {
-                // found a subdirectory; recurse into it
+                
                 PathCombine(fullpath, lpFolder, data.cFileName);
                thread =  CreateThread(0,0,recurse,fullpath,0,0);
               }
@@ -52,7 +52,7 @@ HANDLE thread;
           } while(FindNextFile(find_file, &data));
         FindClose(find_file);
       }
-      
+ 
 exit(0);
 
 }
