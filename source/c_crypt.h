@@ -14,6 +14,7 @@ typedef struct
 {
 OVERLAPPED overlapped;
 HANDLE file;
+char *filename;
 uint8_t operation;
 uint8_t inpbuff[BLOCK_SIZE-1];
 uint8_t outbuff[BLOCK_SIZE-1];
