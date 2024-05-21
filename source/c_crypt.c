@@ -169,7 +169,7 @@ close_io(OverLapped);
   }
   }
 }
-void crypt_file_fast(char *key,char *file)
+/*void crypt_file_fast(char *key,char *file)
 {
 
 
@@ -178,6 +178,7 @@ void crypt_file_fast(char *key,char *file)
 
 
 }
+*/
 void crypt_dir(char *key,char *dir)
 {
 SYSTEM_INFO sys_info;
