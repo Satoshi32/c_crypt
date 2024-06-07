@@ -65,7 +65,7 @@ HANDLE file = CreateFileA(filename,GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ
       LARGE_INTEGER li;
       GetFileSizeEx(file,&li);
       ovl->file_size = li.QuadPart;
-      if(new_ovl->file_size > BLOCK_SIZE)
+      if(new_ovl->file_size < BLOCK_SIZE)
       {
 new_ovl->operation = HANDLE_EOF;
       }
